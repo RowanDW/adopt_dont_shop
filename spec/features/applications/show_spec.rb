@@ -17,37 +17,57 @@ RSpec.describe "application show page" do
 
     visit "/applications/#{@application.id}"
 
-    expect(page).to have_content(@application.name)
-    expect(page).to have_content(@application.street_address)
-    expect(page).to have_content(@application.city)
-    expect(page).to have_content(@application.state)
-    expect(page).to have_content(@application.zip_code)
-    expect(page).to have_content(@application.description)
+    within('#attributes') do
+      expect(page).to have_content(@application.name)
+      expect(page).to have_content(@application.street_address)
+      expect(page).to have_content(@application.city)
+      expect(page).to have_content(@application.state)
+      expect(page).to have_content(@application.zip_code)
+      expect(page).to have_content(@application.description)
+      expect(page).to have_content(@application.app_status)
+    end
 
-    expect(page).to have_content("Pets:")
-    expect(page).to have_link("#{@scooby.name}")
-    expect(page).to have_link("#{@salem.name}")
-    expect(page).to have_content(@application.app_status)
+    within('#app_pets') do
+      expect(page).to have_content("Pets:")
+      expect(page).to have_link("#{@scooby.name}")
+      expect(page).to have_link("#{@salem.name}")
 
-    click_link "#{@scooby.name}"
-    expect(current_path).to eq("/pets/#{@scooby.id}")
+      click_link "#{@scooby.name}"
+      expect(current_path).to eq("/pets/#{@scooby.id}")
 
-    visit "/applications/#{@application.id}"
+      visit "/applications/#{@application.id}"
 
-    click_link "#{@scooby.name}"
-    expect(current_path).to eq("/pets/#{@scooby.id}")
+      click_link "#{@scooby.name}"
+      expect(current_path).to eq("/pets/#{@scooby.id}")
+    end
   end
 
   it "shows an add pet section if app is in progress" do
     visit "/applications/#{@application.id}"
 
-    expect(page).to have_content("Add a Pet to this Application")
+    within('#app_pet_search') do
+      expect(page).to have_content("Add a Pet to this Application")
 
-    fill_in "Pet search", with: "Scooby"
-    click_button 'Search'
+      fill_in "Pet search", with: "Scooby"
+      click_button 'Search'
+      expect(current_path).to eq("/applications/#{@application.id}")
+      expect(page).to have_content("Scooby")
+      expect(page).to_not have_content("Salem")
 
-    expect(current_path).to eq("/applications/#{@application.id}")
-    expect(page).to have_content("Scooby")
+      fill_in "Pet search", with: "s"
+      click_button 'Search'
+      expect(page).to have_content("Scooby")
+      expect(page).to have_content("Salem")
+
+      click_button 'Search'
+      expect(page).to_not have_content("Scooby")
+      expect(page).to_not have_content("Salem")
+
+      fill_in "Pet search", with: "Scrappy"
+      click_button 'Search'
+      expect(page).to_not have_content("Scooby")
+      expect(page).to_not have_content("Salem")
+    end
   end
 
 end
