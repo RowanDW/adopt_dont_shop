@@ -9,12 +9,12 @@ RSpec.describe "application show page" do
 
     @application = Application.create!(name: "P. Sherman", street_address: "42 Wallaby way",
       city: "Denver", state: "CO", zip_code: "80202")
-    @app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @scooby.id)
-    @app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @salem.id)
-
   end
 
   it "shows the application and all attributes" do
+    app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @scooby.id)
+    app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @salem.id)
+
     visit "/applications/#{@application.id}"
 
     expect(page).to have_content(@application.name)
@@ -23,7 +23,7 @@ RSpec.describe "application show page" do
     expect(page).to have_content(@application.state)
     expect(page).to have_content(@application.zip_code)
     expect(page).to have_content(@application.description)
-    
+
     expect(page).to have_content("Pets:")
     expect(page).to have_link("#{@scooby.name}")
     expect(page).to have_link("#{@salem.name}")
@@ -36,6 +36,18 @@ RSpec.describe "application show page" do
 
     click_link "#{@scooby.name}"
     expect(current_path).to eq("/pets/#{@scooby.id}")
+  end
+
+  it "shows an add pet section if app is in progress" do
+    visit "/applications/#{@application.id}"
+
+    expect(page).to have_content("Add a Pet to this Application")
+
+    fill_in "Pet search", with: "Scooby"
+    click_button 'Search'
+
+    expect(current_path).to eq("/applications/#{@application.id}")
+    expect(page).to have_content("Scooby")
   end
 
 end
