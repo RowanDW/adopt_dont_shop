@@ -12,4 +12,8 @@ class Pet < ApplicationRecord
   def self.adoptable
     where(adoptable: true)
   end
+
+  def self.pets_for_app(app_id)
+    joins(:application_pets).where("application_pets.application_id = #{app_id}")
+  end
 end
