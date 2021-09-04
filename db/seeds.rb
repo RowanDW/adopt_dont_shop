@@ -1,5 +1,10 @@
 
 
+Shelter.destroy_all
+Pet.destroy_all
+Application.destroy_all
+ApplicationPet.destroy_all
+
 @shelter_1 = Shelter.create(name: 'Mystery Building', city: 'Irvine CA', foster_program: false, rank: 9)
 @shelter_2 = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
 
