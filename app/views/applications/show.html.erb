@@ -24,7 +24,10 @@
     <% end %>
 
     <% @pet_results.each do |pet| %>
-      <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+      <p>
+        <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+        <%= button_to "Adopt this Pet", "/applications/#{@app.id}", params: {pet_id: pet.id, application_id: @app.id}, method: :post %>
+      </p>
     <% end %>
   <% end %>
 </div>
