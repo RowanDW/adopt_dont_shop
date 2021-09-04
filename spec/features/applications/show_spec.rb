@@ -70,4 +70,33 @@ RSpec.describe "application show page" do
     end
   end
 
+  it "doesn't show add pet if the application is complete" do
+    application_2 = Application.create!(name: "Bob", street_address: "1234",
+        city: "Denver", state: "CO", zip_code: "80202", app_status: "Pending")
+
+    visit "/applications/#{application_2.id}"
+
+    within('#app_pet_search') do
+      expect(page).to_not have_content("Add a Pet to this Application")
+    end
+  end
+
+  it "can add a pet to an application" do
+    visit "/applications/#{@application.id}"
+
+    within('#app_pet_search') do
+      fill_in "Pet search", with: "Scooby"
+      click_button 'Search'
+
+      expect(page).to have_button("Adopt this Pet")
+      click_button "Adopt this Pet"
+
+      expect(current_path).to eq("/applications/#{@application.id}")
+    end
+
+    within('#app_pets') do
+      expect(page).to have_content("Pets:")
+      expect(page).to have_link("#{@scooby.name}")
+    end
+  end
 end
