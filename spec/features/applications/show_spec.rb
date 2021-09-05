@@ -99,4 +99,22 @@ RSpec.describe "application show page" do
       expect(page).to have_link("#{@scooby.name}")
     end
   end
+
+  it "gives an error if the pet is already added to application" do
+    app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @scooby.id)
+
+    visit "/applications/#{@application.id}"
+
+    within('#app_pet_search') do
+      fill_in "Pet search", with: "Scooby"
+      click_button 'Search'
+
+      expect(page).to have_button("Adopt this Pet")
+      click_button "Adopt this Pet"
+    end
+
+    expect(page).to have_content("Error: Pet already added to application")
+    expect(current_path).to eq("/applications/#{@application.id}")
+  
+  end
 end

@@ -2,8 +2,13 @@ class ApplicationPetsController < ApplicationController
 
   def create
     app_pet = ApplicationPet.new(app_pets_params)
-    app_pet.save
-    redirect_to "/applications/#{params[:application_id]}"
+    if ApplicationPet.validate?(app_pet)
+      app_pet.save
+      redirect_to "/applications/#{params[:application_id]}"
+    else
+      redirect_to "/applications/#{params[:application_id]}"
+      flash[:alert] = "Error: Pet already added to application"
+    end
   end
 
   private
