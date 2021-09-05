@@ -31,3 +31,16 @@
     <% end %>
   <% end %>
 </section>
+
+<section id="app_submit">
+  <% if @app.app_status == "In Progress" && @app.pets.count > 0 %>
+    <h3>Why would you make a good owner for these pet(s)?</h3>
+
+    <%= form_with url: "/applications/#{@app.id}", method: :patch, local: true do |f| %>
+      <%= f.label :description %>
+      <%= f.text_field :description %>
+
+      <%= f.submit "Submit Application" %>
+    <% end %>
+  <% end %>
+</section>
