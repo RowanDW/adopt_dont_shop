@@ -115,6 +115,45 @@ RSpec.describe "application show page" do
 
     expect(page).to have_content("Error: Pet already added to application")
     expect(current_path).to eq("/applications/#{@application.id}")
-  
+  end
+
+  it "shows a submit section once pets have been added" do
+    visit "/applications/#{@application.id}"
+
+    within('#app_submit') do
+      expect(page).to_not have_button("Submit")
+      expect(page).to_not have_content("Why would you make a good owner for these pet(s)?")
+    end
+
+    within('#app_pet_search') do
+      fill_in "Pet search", with: "Scooby"
+      click_button 'Search'
+
+      expect(page).to have_button("Adopt this Pet")
+      click_button "Adopt this Pet"
+    end
+
+    within('#app_submit') do
+      expect(page).to have_button("Submit Application")
+      expect(page).to have_content("Why would you make a good owner for these pet(s)?")
+
+      fill_in "Description", with: "Because"
+      click_button "Submit Application"
+    end
+
+    expect(current_path).to eq("/applications/#{@application.id}")
+
+    within('#attributes') do
+      expect(page).to have_content("Pending")
+      expect(page).to_not have_content("In Progress")
+    end
+
+    within('#app_pet_search') do
+      expect(page).to_not have_button("Search")
+    end
+
+    within('#app_submit') do
+      expect(page).to_not have_button("Submit Application")
+    end
   end
 end
