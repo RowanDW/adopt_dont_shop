@@ -7,4 +7,14 @@ class Application < ApplicationRecord
   validates :city, presence: true
   validates :state, presence: true
   validates :zip_code, presence: true
+
+  def show_pet_search?
+    return true if app_status == "In Progress"
+    false
+  end
+
+  def show_app_submit?
+    return true if app_status == "In Progress" && pets.count > 0
+    false
+  end
 end
