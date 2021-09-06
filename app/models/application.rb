@@ -17,4 +17,12 @@ class Application < ApplicationRecord
     return true if app_status == "In Progress" && pets.count > 0
     false
   end
+
+  def app_pet(pet_id)
+    application_pets.where(pet_id: pet_id).first
+  end
+
+  def pet_status(pet_id)
+    app_pet(pet_id).status
+  end
 end

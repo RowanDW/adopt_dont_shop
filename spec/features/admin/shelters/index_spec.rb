@@ -21,7 +21,7 @@ RSpec.describe "admin shelter show page" do
   it "shows each shelter" do
     visit '/admin/shelters'
 
-    within('#pending') do
+    within('#all_shelters') do
       expect(@shelter_2.name).to appear_before(@shelter_3.name)
       expect(@shelter_3.name).to appear_before(@shelter_1.name)
     end
