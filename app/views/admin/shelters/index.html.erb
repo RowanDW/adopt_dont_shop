@@ -1,8 +1,14 @@
-<% @shelters.each do |shelter| %>
-  <div id="shelter-<%= shelter.id %>">
-    <h3><%= shelter.name %></h3>
-    <p>Created at: <%= shelter.created_at %></p>
-    <%= link_to "Update #{shelter.name}", "/shelters/#{shelter.id}/edit" %>
-    <%= link_to "Delete #{shelter.name}", "/shelters/#{shelter.id}", method: :delete %>
-  </div>
-<% end %>
+
+<section id="all_shelters">
+  <h2>All Shelters:</h2>
+  <% @shelters.each do |shelter| %>
+      <h4><%= link_to "#{shelter.name}", "/shelters/#{shelter.id}" %></h4>
+  <% end %>
+</section>
+
+<section id="pending">
+  <h2>Shelters with Pending Applications:</h2>
+  <% @pending.each do |shelter| %>
+    <h4><%= link_to "#{shelter.name}", "/shelters/#{shelter.id}" %></h4>
+  <% end %>
+</section>
