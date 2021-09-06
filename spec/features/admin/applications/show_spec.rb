@@ -19,20 +19,56 @@ RSpec.describe "admin shelter show page" do
     @app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_2.id)
   end
 
+  it "can display application attributes" do
+    within('#attributes') do
+      expect(page).to have_content(@application.name)
+      expect(page).to have_content(@application.street_address)
+      expect(page).to have_content(@application.city)
+      expect(page).to have_content(@application.state)
+      expect(page).to have_content(@application.zip_code)
+      expect(page).to have_content(@application.description)
+      expect(page).to have_content(@application.app_status)
+    end
+  end
+
   it "can approve pets on an application" do
 
     visit "/admin/applications/#{@application.id}"
+    within('#app_pets') do
+      expect(page).to have_content('Mr. Pirate')
+      expect(page).to have_button('Approve Mr. Pirate')
+      expect(page).to have_content('Clawdia')
+      expect(page).to have_button('Approve Clawdia')
 
-    expect(page).to have_content('Mr. Pirate')
-    expect(page).to have_button('Approve Mr. Pirate')
-    expect(page).to have_content('Clawdia')
-    expect(page).to have_button('Approve Clawdia')
+      click_button 'Approve Mr. Pirate'
 
-    click_button 'Approve Mr. Pirate'
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to_not have_button('Approve Mr. Pirate')
+      expect(page).to have_content('Mr. Pirate - Approved')
+    end
+  end
+
+
+  it "can reject pets on an application" do
+    visit "/admin/applications/#{@application.id}"
     
-    expect(current_path).to eq("/admin/applications/#{@application.id}")
-    expect(page).to_not have_button('Approve Mr. Pirate')
-    expect(page).to have_content('Mr. Pirate - Approved')
+    within('#app_pets') do
+      expect(page).to have_content('Mr. Pirate')
+      expect(page).to have_button('Approve Mr. Pirate')
+      expect(page).to have_button('Reject Mr. Pirate')
+      expect(page).to have_content('Clawdia')
+      expect(page).to have_button('Approve Clawdia')
+      expect(page).to have_button('Reject Clawdia')
+
+      click_button 'Reject Mr. Pirate'
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to_not have_button('Approve Mr. Pirate')
+      expect(page).to_not have_button('Reject Mr. Pirate')
+      expect(page).to have_content('Mr. Pirate - Rejected')
+      expect(page).to have_button('Approve Clawdia')
+      expect(page).to have_button('Reject Clawdia')
+    end
   end
 
 end
