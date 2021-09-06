@@ -29,7 +29,7 @@ RSpec.describe "admin shelter show page" do
     expect(page).to have_button('Approve Clawdia')
 
     click_button 'Approve Mr. Pirate'
-    save_and_open_page
+    
     expect(current_path).to eq("/admin/applications/#{@application.id}")
     expect(page).to_not have_button('Approve Mr. Pirate')
     expect(page).to have_content('Mr. Pirate - Approved')
