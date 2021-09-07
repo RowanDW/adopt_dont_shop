@@ -72,7 +72,7 @@ RSpec.describe "admin application show page" do
     end
   end
 
-  it "changes an applications status when all pets are accepted" do
+  it "changes an application when all pets are accepted" do
     visit "/admin/applications/#{@application.id}"
 
     within('#app_pets') do
@@ -86,6 +86,23 @@ RSpec.describe "admin application show page" do
 
     within('#attributes') do
       expect(page).to have_content("Status: Approved")
+    end
+  end
+
+  it "changes arejects an application when all pets are decided but not approved" do
+    visit "/admin/applications/#{@application.id}"
+
+    within('#app_pets') do
+      click_button 'Approve Mr. Pirate'
+      click_button 'Reject Clawdia'
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to have_content('Mr. Pirate - Approved')
+      expect(page).to have_content('Clawdia - Rejected')
+    end
+
+    within('#attributes') do
+      expect(page).to have_content("Status: Rejected")
     end
   end
 

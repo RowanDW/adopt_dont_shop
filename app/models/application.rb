@@ -30,4 +30,9 @@ class Application < ApplicationRecord
      return true if application_pets.where(status: ["Rejected", nil]).count == 0
      false
   end
+
+  def all_decided?
+    return true if application_pets.where(status: nil).count == 0
+    false
+  end
 end
