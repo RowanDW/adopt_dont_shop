@@ -20,7 +20,8 @@ RSpec.describe "admin shelter show page" do
   end
 
   it "can display application attributes" do
-    within('#attributes') do
+    visit "/admin/applications/#{@application.id}"
+    within('#app_attributes') do
       expect(page).to have_content(@application.name)
       expect(page).to have_content(@application.street_address)
       expect(page).to have_content(@application.city)
@@ -51,7 +52,7 @@ RSpec.describe "admin shelter show page" do
 
   it "can reject pets on an application" do
     visit "/admin/applications/#{@application.id}"
-    
+
     within('#app_pets') do
       expect(page).to have_content('Mr. Pirate')
       expect(page).to have_button('Approve Mr. Pirate')
