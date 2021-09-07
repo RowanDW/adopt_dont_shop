@@ -27,14 +27,14 @@ RSpec.describe Application, type: :model do
         city: "Denver", state: "CO", zip_code: "80202")
     end
 
-    describe '#show_pet_search?' do
+    describe '.show_pet_search?' do
       it "can determine if pet search should show" do
         expect(@application.show_pet_search?).to be true
         expect(@application_2.show_pet_search?).to be false
       end
     end
 
-    describe '#show_app_submit?' do
+    describe '.show_app_submit?' do
       it "can determine if app submit should show" do
         expect(@application_3.show_app_submit?).to be false
 
@@ -44,17 +44,38 @@ RSpec.describe Application, type: :model do
       end
     end
 
-    describe '#app_pet' do
+    describe '.app_pet' do
       it 'finds the app_pet record for the pet and application' do
         app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
         expect(@application_3.app_pet(@scooby.id)).to eq(app_pet_1)
       end
     end
 
-    describe '#pet_status' do
+    describe '.pet_status' do
       it 'finds the status of the app_pet' do
         app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
         expect(@application_3.pet_status(@scooby.id)).to eq(nil)
+      end
+    end
+
+    describe '.all_approved?' do
+      it 'returns true if all pets on application are approved' do
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+
+        expect(@application_3.all_approved?).to eq(false)
+
+        app_pet_1.update(status: "Rejected")
+
+        expect(@application_3.all_approved?).to eq(false)
+
+        app_pet_1.update(status: "Approved")
+        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id)
+
+        expect(@application_3.all_approved?).to eq(false)
+
+        app_pet_2.update(status: "Approved")
+
+        expect(@application_3.all_approved?).to eq(true)
       end
     end
   end
