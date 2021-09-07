@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "admin shelter show page" do
+RSpec.describe "admin application show page" do
 
   before :each do
     @shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
@@ -21,7 +21,8 @@ RSpec.describe "admin shelter show page" do
 
   it "can display application attributes" do
     visit "/admin/applications/#{@application.id}"
-    within('#app_attributes') do
+
+    within('#attributes') do
       expect(page).to have_content(@application.name)
       expect(page).to have_content(@application.street_address)
       expect(page).to have_content(@application.city)
@@ -52,7 +53,6 @@ RSpec.describe "admin shelter show page" do
 
   it "can reject pets on an application" do
     visit "/admin/applications/#{@application.id}"
-
     within('#app_pets') do
       expect(page).to have_content('Mr. Pirate')
       expect(page).to have_button('Approve Mr. Pirate')
@@ -69,6 +69,23 @@ RSpec.describe "admin shelter show page" do
       expect(page).to have_content('Mr. Pirate - Rejected')
       expect(page).to have_button('Approve Clawdia')
       expect(page).to have_button('Reject Clawdia')
+    end
+  end
+
+  it "changes an applications status when all pets are accepted" do
+    visit "/admin/applications/#{@application.id}"
+
+    within('#app_pets') do
+      click_button 'Approve Mr. Pirate'
+      click_button 'Approve Clawdia'
+
+      expect(current_path).to eq("/admin/applications/#{@application.id}")
+      expect(page).to have_content('Mr. Pirate - Approved')
+      expect(page).to have_content('Clawdia - Approved')
+    end
+
+    within('#attributes') do
+      expect(page).to have_content("Status: Approved")
     end
   end
 

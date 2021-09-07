@@ -25,4 +25,9 @@ class Application < ApplicationRecord
   def pet_status(pet_id)
     app_pet(pet_id).status
   end
+
+  def all_approved?
+     return true if application_pets.where(status: ["Rejected", nil]).count == 0
+     false
+  end
 end
