@@ -78,5 +78,25 @@ RSpec.describe Application, type: :model do
         expect(@application_3.all_approved?).to eq(true)
       end
     end
+
+    describe '.all_decided?' do
+      it 'returns true if all pets on application are approved' do
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+
+        expect(@application_3.all_decided?).to eq(false)
+
+        app_pet_1.update(status: "Rejected")
+
+        expect(@application_3.all_decided?).to eq(true)
+
+        app_pet_1.update(status: "Approved")
+        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id)
+
+        expect(@application_3.all_decided?).to eq(false)
+
+        app_pet_2.update(status: "Approved")
+        expect(@application_3.all_decided?).to eq(true)
+      end
+    end
   end
 end
