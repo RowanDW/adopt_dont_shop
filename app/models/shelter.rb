@@ -21,7 +21,11 @@ class Shelter < ApplicationRecord
   end
 
   def self.with_pending_apps
-    select("shelters.*").joins(pets: :applications).where('applications.app_status = ?', "Pending").distinct
+    select("shelters.*").
+    joins(pets: :applications).
+    where('applications.app_status = ?', "Pending").
+    order("shelters.name").
+    distinct
     #includes(:pets).where(pets: {app_status: "Pending"})
   end
 
