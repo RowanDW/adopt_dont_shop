@@ -4,6 +4,7 @@ class Admin::ApplicationsController < ApplicationController
     @app = Application.find(params[:id])
     if @app.all_approved?
       @app.update(app_status: "Approved")
+      @app.pets.update_all(adoptable: false)
     elsif @app.all_decided?
       @app.update(app_status: "Rejected")
     end
