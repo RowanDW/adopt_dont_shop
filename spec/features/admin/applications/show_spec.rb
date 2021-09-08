@@ -50,7 +50,6 @@ RSpec.describe "admin application show page" do
     end
   end
 
-
   it "can reject pets on an application" do
     visit "/admin/applications/#{@application.id}"
     within('#app_pets') do
@@ -146,5 +145,37 @@ RSpec.describe "admin application show page" do
 
     visit "/pets/#{@pet_2.id}"
     expect(page).to have_content("Adoptable: true")
+  end
+
+  it "cant approve pets that were on an already approved application" do
+
+    @application_2 = Application.create!(name: "Whateveer", street_address: "42 Wallaby way",
+      city: "Denver", state: "CO", zip_code: "80202", app_status: "Pending")
+
+    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_2.id)
+    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_3.id)
+
+    visit "/admin/applications/#{@application.id}"
+
+    within('#app_pets') do
+      click_button 'Approve Mr. Pirate'
+      click_button 'Approve Clawdia'
+    end
+
+    within('#attributes') do
+      expect(page).to have_content("Status: Approved")
+    end
+
+    visit "/admin/applications/#{@application_2.id}"
+
+    within('#app_pets') do
+      expect(page).to have_content('Clawdia')
+      expect(page).to_not have_button('Approve Clawdia')
+      expect(page).to have_button('Reject Clawdia')
+
+      expect(page).to have_content('Lucille Bald')
+      expect(page).to have_button('Approve Lucille Bald')
+      expect(page).to have_button('Reject Lucille Bald')
+    end    
   end
 end
