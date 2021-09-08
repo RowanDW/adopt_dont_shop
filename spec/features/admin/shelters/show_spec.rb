@@ -44,4 +44,17 @@ RSpec.describe "admin shelter show page" do
       expect(page).to have_content('Adoptable pets: 3')
     end
   end
+
+  it "shows count of adopted pets in stats" do
+    @application.update(app_status: "Approved")
+    @pet_1.update(adoptable: false)
+    visit "/admin/shelters/#{@shelter_1.id}"
+
+    within('#statistics') do
+      expect(page).to have_content('Shelter Stats:')
+      expect(page).to have_content('Average pet age: 4.33 years')
+      expect(page).to have_content('Adoptable pets: 2')
+      expect(page).to have_content('Adopted pets: 1')
+    end
+  end
 end
