@@ -1,2 +1,11 @@
-<h1><%= @shelter.name %></h1>
-<h3><%= @shelter.city %></h3>
+<section id="attributes">
+  <h1><%= @shelter_sql.name %></h1>
+  <h3><%= @shelter_sql.city %></h3>
+</section>
+
+<section id='statistics'>
+  <h3>Shelter Stats:</h3>
+  <p>Average pet age: <%= @shelter.av_age %> years</p>
+  <p>Adoptable pets: <%= @shelter.adoptable_count %></p>
+  <p>Adopted pets: <%= @shelter.adopted_count %></p>
+</section>

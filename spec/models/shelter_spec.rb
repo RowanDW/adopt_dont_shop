@@ -92,5 +92,31 @@ RSpec.describe Shelter, type: :model do
         expect(@shelter_1.pet_count).to eq(3)
       end
     end
+
+    describe '.av_age' do
+      it "returns the average age of all the pets at the shelter" do
+        expect(@shelter_1.av_age).to eq(4.33)
+        expect(@shelter_3.av_age).to eq(8)
+      end
+    end
+
+    describe '.adoptable_count' do
+      it "returns the number of adoptable pets at the shelter" do
+        expect(@shelter_1.adoptable_count).to eq(2)
+        expect(@shelter_3.adoptable_count).to eq(1)
+        expect(@shelter_2.adoptable_count).to eq(0)
+      end
+    end
+
+    describe '.adopted_count' do
+      it "returns the number of adoptable pets at the shelter" do
+        @application.update(app_status: "Approved")
+        @pet_2.update(adoptable: false)
+
+        expect(@shelter_1.adopted_count).to eq(1)
+        expect(@shelter_2.adopted_count).to eq(0)
+        expect(@shelter_3.adopted_count).to eq(0)
+      end
+    end
   end
 end
