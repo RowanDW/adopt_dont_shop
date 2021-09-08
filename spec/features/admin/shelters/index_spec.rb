@@ -27,6 +27,20 @@ RSpec.describe "admin shelter index page" do
     end
   end
 
+  it "links each shelter to its admin page" do
+    visit '/admin/shelters'
+
+    within('#all_shelters') do
+      expect(page).to have_link('Aurora shelter')
+      expect(page).to have_link('RGV animal shelter')
+      expect(page).to have_link('Fancy pets of Colorado')
+
+      click_link('Aurora shelter')
+
+      expect(current_path).to eq("/admin/shelters/#{@shelter_1.id}")
+    end
+  end
+
   it 'shows a shelters with pending applications section' do
     visit '/admin/shelters'
 
