@@ -89,7 +89,7 @@ RSpec.describe "admin application show page" do
     end
   end
 
-  it "changes arejects an application when all pets are decided but not approved" do
+  it "rejects an application when all pets are decided but not approved" do
     visit "/admin/applications/#{@application.id}"
 
     within('#app_pets') do
@@ -106,4 +106,45 @@ RSpec.describe "admin application show page" do
     end
   end
 
+  it "updates pet adoptable when application is approved" do
+    visit "/pets/#{@pet_1.id}"
+    expect(page).to have_content("Adoptable: true")
+
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("Adoptable: true")
+
+    visit "/admin/applications/#{@application.id}"
+
+    within('#app_pets') do
+      click_button 'Approve Mr. Pirate'
+      click_button 'Approve Clawdia'
+    end
+
+    visit "/pets/#{@pet_1.id}"
+    expect(page).to have_content("Adoptable: false")
+
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("Adoptable: false")
+  end
+
+  it "does not update pet adoptable when application is rejected" do
+    visit "/pets/#{@pet_1.id}"
+    expect(page).to have_content("Adoptable: true")
+
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("Adoptable: true")
+
+    visit "/admin/applications/#{@application.id}"
+
+    within('#app_pets') do
+      click_button 'Approve Mr. Pirate'
+      click_button 'Reject Clawdia'
+    end
+
+    visit "/pets/#{@pet_1.id}"
+    expect(page).to have_content("Adoptable: true")
+
+    visit "/pets/#{@pet_2.id}"
+    expect(page).to have_content("Adoptable: true")
+  end
 end
