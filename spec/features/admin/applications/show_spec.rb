@@ -176,6 +176,6 @@ RSpec.describe "admin application show page" do
       expect(page).to have_content('Lucille Bald')
       expect(page).to have_button('Approve Lucille Bald')
       expect(page).to have_button('Reject Lucille Bald')
-    end    
+    end
   end
 end

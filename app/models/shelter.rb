@@ -25,6 +25,10 @@ class Shelter < ApplicationRecord
     #includes(:pets).where(pets: {app_status: "Pending"})
   end
 
+  def self.get_name_and_city(shelt_id)
+    find_by_sql("SELECT shelters.name, shelters.city FROM shelters WHERE shelters.id = #{shelt_id}").first
+  end
+
   def pet_count
     pets.count
   end
