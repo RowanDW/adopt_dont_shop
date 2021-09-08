@@ -20,8 +20,18 @@ RSpec.describe "admin shelter show page" do
 
   it "shows the name and city of each shelter" do
     visit "/admin/shelters/#{@shelter_1.id}"
+    within('#attributes') do
+      expect(page).to have_content(@shelter_1.name)
+      expect(page).to have_content(@shelter_1.city)
+    end
+  end
 
-    expect(page).to have_content(@shelter_1.name)
-    expect(page).to have_content(@shelter_1.city)
+  it "has a section for statistics with average age" do
+    visit "/admin/shelters/#{@shelter_1.id}"
+
+    within('#statistics') do
+      expect(page).to have_content('Shelter Stats:')
+      expect(page).to have_content('Average pet age: 4.33 years')
+    end
   end
 end
