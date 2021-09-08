@@ -2,13 +2,13 @@
 <section id="all_shelters">
   <h2>All Shelters:</h2>
   <% @shelters.each do |shelter| %>
-      <h4><%= link_to "#{shelter.name}", "/shelters/#{shelter.id}" %></h4>
+      <h4><%= link_to "#{shelter.name}", "/admin/shelters/#{shelter.id}" %></h4>
   <% end %>
 </section>
 
 <section id="pending">
   <h2>Shelters with Pending Applications:</h2>
   <% @pending.each do |shelter| %>
-    <h4><%= link_to "#{shelter.name}", "/shelters/#{shelter.id}" %></h4>
+    <h4><%= link_to "#{shelter.name}", "/admin/shelters/#{shelter.id}" %></h4>
   <% end %>
 </section>

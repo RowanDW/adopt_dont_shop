@@ -58,6 +58,14 @@ RSpec.describe Shelter, type: :model do
         expect(Shelter.with_pending_apps).to eq([@shelter_1])
       end
     end
+
+    describe '#get_name_and_city' do
+      it "finds the name and city of the shelter" do
+        shelter = Shelter.get_name_and_city(@shelter_1.id)
+        expect(shelter.name).to eq('Aurora shelter')
+        expect(shelter.city).to eq('Aurora, CO')
+      end
+    end
   end
 
   describe 'instance methods' do
