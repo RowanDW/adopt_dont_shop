@@ -25,7 +25,7 @@ RSpec.describe Shelter, type: :model do
     @application = Application.create!(name: "P. Sherman", street_address: "42 Wallaby way",
       city: "Denver", state: "CO", zip_code: "80202", app_status: "Pending")
 
-    @app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_2.id)
+    @app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_2.id, status: "Pending")
   end
 
   describe 'class methods' do
@@ -116,6 +116,17 @@ RSpec.describe Shelter, type: :model do
         expect(@shelter_1.adopted_count).to eq(1)
         expect(@shelter_2.adopted_count).to eq(0)
         expect(@shelter_3.adopted_count).to eq(0)
+      end
+    end
+
+    describe '.action_required' do
+      it "returns list of pets pending a decision at the shelter" do
+        app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_4.id, status: "Pending")
+
+        expect(@shelter_1.action_required).to eq([@pet_2, @pet_4])
+        app_pet_2.update(status: "Approved")
+
+        expect(@shelter_1.action_required).to eq([@pet_2])
       end
     end
   end

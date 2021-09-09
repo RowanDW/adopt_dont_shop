@@ -60,4 +60,8 @@ class Shelter < ApplicationRecord
   def adopted_count
     pets.joins(:applications).where('applications.app_status = ?', 'Approved').count
   end
+
+  def action_required
+    pets.joins(:application_pets).where('application_pets.status = ?', "Pending").uniq
+  end
 end

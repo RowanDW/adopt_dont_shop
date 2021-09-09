@@ -27,12 +27,12 @@ class Application < ApplicationRecord
   end
 
   def all_approved?
-     return true if application_pets.where(status: ["Rejected", nil]).count == 0
+     return true if application_pets.where(status: ["Rejected", "Pending"]).count == 0
      false
   end
 
   def all_decided?
-    return true if application_pets.where(status: nil).count == 0
+    return true if application_pets.where(status: "Pending").count == 0
     false
   end
 end
