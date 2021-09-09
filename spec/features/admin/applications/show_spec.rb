@@ -15,8 +15,8 @@ RSpec.describe "admin application show page" do
     @application = Application.create!(name: "P. Sherman", street_address: "42 Wallaby way",
       city: "Denver", state: "CO", zip_code: "80202", app_status: "Pending")
 
-    @app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_1.id)
-    @app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_2.id)
+    @app_pet_1 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_1.id, status: "Pending")
+    @app_pet_2 = ApplicationPet.create!(application_id: @application.id, pet_id: @pet_2.id, status: "Pending")
   end
 
   it "can display application attributes" do
@@ -152,8 +152,8 @@ RSpec.describe "admin application show page" do
     @application_2 = Application.create!(name: "Whateveer", street_address: "42 Wallaby way",
       city: "Denver", state: "CO", zip_code: "80202", app_status: "Pending")
 
-    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_2.id)
-    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_3.id)
+    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_2.id, status: "Pending")
+    @app_pet_3 = ApplicationPet.create!(application_id: @application_2.id, pet_id: @pet_3.id, status: "Pending")
 
     visit "/admin/applications/#{@application.id}"
 

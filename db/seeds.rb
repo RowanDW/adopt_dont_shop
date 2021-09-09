@@ -17,5 +17,5 @@ ApplicationPet.destroy_all
 @application_1 = Application.create(name: "P. Sherman", street_address: "42 Wallaby way", city: "Denver", state: "CO", zip_code: "80202")
 @application_2 = Application.create(name: "J. Biden", street_address: "1600 Pennsylvania Ave", city: "Washington", state: "D.C.", zip_code: "20500")
 
-@app_pet_1 = ApplicationPet.create(application_id: @application_1.id, pet_id: @pet_1.id)
-@app_pet_2 = ApplicationPet.create(application_id: @application_1.id, pet_id: @pet_2.id)
+@app_pet_1 = ApplicationPet.create(application_id: @application_1.id, pet_id: @pet_1.id, status: "Pending")
+@app_pet_2 = ApplicationPet.create(application_id: @application_1.id, pet_id: @pet_2.id, status: "Pending")

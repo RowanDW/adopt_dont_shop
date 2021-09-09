@@ -38,7 +38,7 @@ RSpec.describe Application, type: :model do
       it "can determine if app submit should show" do
         expect(@application_3.show_app_submit?).to be false
 
-        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id, status: "Pending")
 
         expect(@application_3.show_app_submit?).to be true
       end
@@ -46,21 +46,21 @@ RSpec.describe Application, type: :model do
 
     describe '.app_pet' do
       it 'finds the app_pet record for the pet and application' do
-        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id, status: "Pending")
         expect(@application_3.app_pet(@scooby.id)).to eq(app_pet_1)
       end
     end
 
     describe '.pet_status' do
       it 'finds the status of the app_pet' do
-        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
-        expect(@application_3.pet_status(@scooby.id)).to eq(nil)
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id, status: "Pending")
+        expect(@application_3.pet_status(@scooby.id)).to eq("Pending")
       end
     end
 
     describe '.all_approved?' do
       it 'returns true if all pets on application are approved' do
-        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id, status: "Pending")
 
         expect(@application_3.all_approved?).to eq(false)
 
@@ -69,7 +69,7 @@ RSpec.describe Application, type: :model do
         expect(@application_3.all_approved?).to eq(false)
 
         app_pet_1.update(status: "Approved")
-        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id)
+        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id, status: "Pending")
 
         expect(@application_3.all_approved?).to eq(false)
 
@@ -81,7 +81,7 @@ RSpec.describe Application, type: :model do
 
     describe '.all_decided?' do
       it 'returns true if all pets on application are approved' do
-        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id)
+        app_pet_1 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @scooby.id, status: "Pending")
 
         expect(@application_3.all_decided?).to eq(false)
 
@@ -90,7 +90,7 @@ RSpec.describe Application, type: :model do
         expect(@application_3.all_decided?).to eq(true)
 
         app_pet_1.update(status: "Approved")
-        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id)
+        app_pet_2 = ApplicationPet.create!(application_id: @application_3.id, pet_id: @salem.id, status: "Pending")
 
         expect(@application_3.all_decided?).to eq(false)
 

@@ -9,3 +9,13 @@
   <p>Adoptable pets: <%= @shelter.adoptable_count %></p>
   <p>Adopted pets: <%= @shelter.adopted_count %></p>
 </section>
+
+<section id='action_required'>
+  <h3>Action Required:</h3>
+  <% @shelter.action_required.each do |pet| %>
+    <h4><%= pet.name %></h4>
+    <% pet.applications.each do |app| %>
+      <p>- <%= link_to "View Application For: #{app.name}", "/admin/applications/#{app.id}"%></p>
+    <% end %>
+  <% end %>
+</section>

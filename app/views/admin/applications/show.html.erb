@@ -9,7 +9,7 @@
   <h3>Pets: </h3>
   <% @app.pets.each do |pet| %>
     <p><%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
-    <% if @app.pet_status(pet.id) == nil %>
+    <% if @app.pet_status(pet.id) == "Pending" %>
       <% if pet.adoptable %>
         <%= button_to "Approve #{pet.name}", "/admin/applications/#{@app.id}", params: {pet_id: pet.id, status: "Approved"}, method: :patch %>
       <% end %>
